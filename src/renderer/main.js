@@ -6,16 +6,18 @@ import router from './router'
 import store from './store'
 
 import FullCalendar from 'vue-full-calendar'
-import fcalendar from 'fullcalendar'
-import jquery from 'jquery'
+import moment from 'moment'
+import UIkit from 'uikit'
+// import bulma from 'bulma'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
 axios.defaults.baseURL = 'http://scheduleapi.test/api/';
 Vue.http = Vue.prototype.$http = axios
+Vue.prototype.$uikit = UIkit
 Vue.config.productionTip = false
 
-Vue.use(FullCalendar, fcalendar, jquery)
+Vue.use(FullCalendar, moment)
 
 /* eslint-disable no-new */
 new Vue({

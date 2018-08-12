@@ -22,41 +22,44 @@
         </select>
       </div>
       <div class="column">
-        <h5>Pertrauka</h5>
+        <h5>Pertraukos</h5>
         <hr>
-        <div v-for="index in breakCount">
+        <div v-for="item, index in breaks">
           <label>Pradžia</label>
-          <select name="breaks[]">
+          <select v-model="item.start">
             <option value="11:30">11:30</option>
             <option value="12:00">12:00</option>
           </select>
           <label>Pabaiga</label>
-          <select name="breaks[]">
-            <option value="12:30">12:30</option>
+          <select v-model="item.end">
+            <option value="12:00">12:00</option>
             <option value="13:00">13:00</option>
           </select>
+          <button type="button" v-on:click="breakCountUpdate(false, index)" v-if="breaks.length > 0">-</button>
         </div>
-        <button type="button" v-on:click="breakCountUpdate(true)" v-if="breakCount < 3">+</button>
+        <button type="button" v-on:click="breakCountUpdate(true)" v-if="breaks.length < 3">+</button>
       </div>
       <div class="column">
         <h5>Veiksmai</h5>
         <hr>
         <button>Pridėti</button>
+        <button type="button" v-on:click="updateSchedule()">ATNAUJINTI</button>
       </div>
     </form>
-    {{ events }}
     <full-calendar :events="events" @event-selected="eventSelected" @select-overlap="selectOverlap" @day-click="dayClick" :config="config"></full-calendar>
   </div>
 </template>
 
 <script>
   import { FullCalendar } from 'vue-full-calendar'
+  import moment from 'moment'
 
   export default{
     name: 'schedule-view',
     components: {FullCalendar},
     data(){
       return {
+        schedule_id: this.$route.params.id,
         selected: [],
         multipleDays: true,
         startTime: '8:00',
@@ -70,49 +73,60 @@
         events: [],
         breaks: [],
         breakCount: 1,
+        updateData: [
+          {
+            schedule_id: this.$route.params.id,
+          }
+        ]
       }
     },
     mounted(){
-      //
+      this.$http.get('schedule-data/' + this.schedule_id).then(res => {
+        this.events = res.data
+      }).catch(err => {
+        console.log(err)
+      })
     },
     methods:{
+      updateSchedule(){
+        this.updateData.push(this.events)
+
+        this.$http.patch('schedule-data/' + this.schedule_id, this.events).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       eventSelected(calEvent) {
         console.log(calEvent)
       },
       selectOverlap(event) {
-        // console.log(event)
          return event.rendering === 'background';
 
       },
       dayClick(event, jsEvent, view){
-        var selection = {
+        var selectionWork = {
           start: event,
           end: event,
           rendering: 'background',
-          type: 'darbas'
+          type: 'work'
         }
 
+        //Working hours
         var duplicate = false
-        console.log(event)
         if(this.events.length != 0){
           duplicate = false
           this.events.forEach(item => {
-            var d = new Date(item.start._i)
-            var selectionDate = d.getFullYear() + ' ' + ("0" + (d.getMonth() + 1)).slice(-2) + ' ' + ("0" + (d.getDate() + 1)).slice(-2)
-            var first = selection.start.format()
-
-            var some = new Date(first)
-            some = some.getFullYear() + ' ' + ("0" + (some.getMonth() + 1)).slice(-2) + ' ' + ("0" + (some.getMonth() + 1)).slice(-2)
-
-            if(some == selectionDate){
+            //checks if there are no duplicates
+            if(moment(item.start._d).isSame(selectionWork.start._d)){
               duplicate = true
-
             }
           })
         }
         if(!duplicate){
-          this.events.push(selection)
+          this.events.push(selectionWork)
         } else {
+          //removes selection if duplicate
           this.events = this.events.filter(item => {
             return item.start._i != event._i
           })
@@ -120,21 +134,43 @@
       },
       addRecord(){
         this.events.forEach(item => {
+          console.log(item)
           if(item.rendering == 'background'){
-            var currentStart = item.start.format('Y-MM-DD').toString()
-            var currentEnd = item.start.format('Y-MM-DD').toString()
+            var currentStart = item.start.format('Y MM DD')
+            var currentEnd = item.start.format('Y MM DD')
 
-            item.start = currentStart + ' ' + this.startTime
-            item.end = currentEnd + ' ' + this.endTime
+            if(this.breaks.length > 0){
+              this.breaks.forEach(breakItem => {
+                var singleBreak = {
+                  start: moment(currentStart + ' ' + breakItem.start).format('Y MM DD HH:mm'),
+                  end: moment(currentEnd + ' ' + breakItem.end).format('Y MM DD HH:mm'),
+                  color: '#ffbf00',
+                  rendering: '',
+                  type: 'break'
+                }
+                this.events.push(singleBreak)
+              })
+            }
+
+            item.start = moment(currentStart + ' ' + this.startTime).format('Y MM DD HH:mm')
+            item.end = moment(currentEnd + ' ' + this.endTime).format('Y MM DD HH:mm')
             item.rendering = ''
+
+
           }
+          console.log(item)
         })
       },
-      breakCountUpdate(opt){
-        if(opt && this.breakCount < 3){
-          this.breakCount++
-        } else if (!opt && this.breakCount >= 1){
-          this.breakCount--
+      breakCountUpdate(opt, index = null){
+        if(opt && this.breaks.length < 3){
+          var newBreak = {
+            start: '11:30',
+            end: '12:00'
+          }
+          this.breaks.push(newBreak)
+          console.log(this.breaks)
+        } else if (!opt && this.breaks.length >= 1){
+          this.breaks.splice(index, 1)
         }
       }
     }

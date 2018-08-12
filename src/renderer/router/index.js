@@ -8,17 +8,27 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: require('@/components/Users').default
+      component: require('@/components/Home').default
     },
     {
-      path: '/schedule/view',
+      path: '/schedules',
+      name: 'schedules',
+      component: require('@/components/schedule/index').default
+    },
+    {
+      path: '/schedules/view/:id',
       name: 'schedule-view',
       component: require('@/components/schedule/view').default
     },
     {
-      path: '/schedule/dontview',
-      name: 'schedule-dontview',
-      component: require('@/components/schedule/dontview').default
+      path: '/employees/index',
+      name: 'employees',
+      component: require('@/components/employee/index').default
+    },
+    {
+      path: '/position/index',
+      name: 'position',
+      component: require('@/components/position/index').default
     },
     {
       path: '*',
