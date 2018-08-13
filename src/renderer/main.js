@@ -5,10 +5,10 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import FullCalendar from 'vue-full-calendar'
-import moment from 'moment'
+// import FullCalendar from 'vue-full-calendar'
+// import moment from 'moment'
 import UIkit from 'uikit'
-// import bulma from 'bulma'
+import FullCalendar from 'vue-full-calendar'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 
@@ -17,7 +17,8 @@ Vue.http = Vue.prototype.$http = axios
 Vue.prototype.$uikit = UIkit
 Vue.config.productionTip = false
 
-Vue.use(FullCalendar, moment)
+Vue.use(FullCalendar)
+// Vue.use(moment)
 
 /* eslint-disable no-new */
 new Vue({

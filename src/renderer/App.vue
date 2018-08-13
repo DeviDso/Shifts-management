@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div uk-grid>
-    <div class="uk-width-1-5@m">
+    <div class="uk-width-1-4@m">
         <div class="uk-card uk-card-default uk-card-body" id="menu">
           <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
               <li class="uk-nav-header">Senolių namai</li>
@@ -80,5 +80,13 @@ UIkit.use(Icons)
   }
   .uk-nav-default li{
     text-transform: uppercase;
+  }
+  .uk-notification{
+    border: solid 1px #cecece;
+    text-align: center;
+    background: #fff;
+  }
+  .uk-notification-message{
+    background: #fff;
   }
 </style>
