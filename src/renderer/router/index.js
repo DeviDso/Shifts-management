@@ -26,9 +26,24 @@ export default new Router({
       component: require('@/components/employee/index').default
     },
     {
+      path: '/employees/view/:id',
+      name: 'employee',
+      component: require('@/components/employee/view').default
+    },
+    {
       path: '/position/index',
       name: 'position',
       component: require('@/components/position/index').default
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: require('@/components/settings/index').default
+    },
+    {
+      path: '/export',
+      name: 'export',
+      component: require('@/components/export/index').default
     },
     {
       path: '*',
