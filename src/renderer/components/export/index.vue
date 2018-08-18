@@ -68,8 +68,8 @@
           <div uk-spinner="ratio: 3" style="color: #000; margin-left: 40%; margin-top: 375px"></div>
         </div>
         <button id="closeGenerateModal" class="uk-button uk-button-default uk-modal-close uk-hidden" type="button">Cancel</button>
+      </div>
     </div>
-</div>
   </div>
 </template>
 

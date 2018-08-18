@@ -72,6 +72,7 @@
                   <button class="uk-button uk-button-primary uk-button-medium" type="submit">Sukurti</button>
                 </div>
                 <div class="uk-align-right">
+                  <button class="uk-button uk-button-danger uk-button-medium" type="button" v-on:click="deletePosition(editPosition.id)">Ištrinti</button>
                   <button id="newPosition" class="uk-button uk-button-secondary uk-button-medium uk-modal-close" type="button">Uždaryti</button>
                 </div>
               </form>
@@ -142,6 +143,18 @@
           this.notify('warning', 'Klaida atnaujintant pareigas!')
           console.log(err)
         })
+      },
+      deletePosition(id){
+        if(confirm("Ar tikrai norite ištrinti pareigas?")){
+          this.$http.delete('position/' + id).then(res => {
+            this.notify('success', 'Pareigos sėkmingai ištrintos')
+            document.getElementById('edit-position').click()
+            this.getList()
+          }).catch(err => {
+            console.log(err)
+            this.notify('warning', 'Nepavyko ištrinti pareigų!')
+          })
+        }
       }
     }
   }

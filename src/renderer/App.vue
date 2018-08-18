@@ -10,6 +10,7 @@
                 <li><router-link :to="{ name: 'position', params: {} }"><span class="uk-margin-small-right" uk-icon="icon: nut"></span> Pareigos</router-link></li>
                 <li><router-link :to="{ name: 'schedules', params: {} }"><span class="uk-margin-small-right" uk-icon="icon: calendar"></span> Tvarkaraščiai</router-link></li>
                 <li class="uk-nav-divider"></li>
+                <!-- <li><a href="#" v-on:click="openPage('schedules')">TEST</a></li> -->
                 <li><router-link :to="{ name: 'wage', params: {} }"><span class="uk-margin-small-right" uk-icon="icon: credit-card"></span> Atlyginimai</router-link></li>
                 <li><router-link :to="{ name: 'export', params: {} }"><span class="uk-margin-small-right" uk-icon="icon: cloud-download"></span> Eksportavimas</router-link></li>
                 <li><router-link :to="{ name: 'settings', params: {} }"><span class="uk-margin-small-right" uk-icon="icon: settings"></span> Nustatymai</router-link></li>
@@ -83,6 +84,9 @@ UIkit.use(Icons)
           status: status,
           timeout: 3000,
         })
+      },
+      openPage(name){
+        this.$router.push({name:name})
       },
       postReport(){
         this.$http.post('report', this.report).then(res => {

@@ -375,6 +375,7 @@
         })
       },
       updateSchedule(){
+        event.preventDefault()
         this.removeEventsRendering()
         this.updateData.push(this.events)
 

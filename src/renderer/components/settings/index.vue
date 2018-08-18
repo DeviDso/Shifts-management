@@ -40,10 +40,10 @@
                   <option value="1.25">1.25x</option>
                   <option value="1.5">1.5x</option>
                   <option value="1.75">1.75x</option>
-                  <option value="2.00">2.00x</option>
+                  <option value="2">2.00x</option>
                   <option value="2.25">2.25x</option>
                   <option value="2.50">2.50x</option>
-                  <option value="3.00">3.00x</option>
+                  <option value="3">3.00x</option>
                 </select>
               </div>
             </div>
@@ -54,10 +54,10 @@
                   <option value="1.25">1.25x</option>
                   <option value="1.5">1.5x</option>
                   <option value="1.75">1.75x</option>
-                  <option value="2.00">2.00x</option>
+                  <option value="2">2.00x</option>
                   <option value="2.25">2.25x</option>
                   <option value="2.50">2.50x</option>
-                  <option value="3.00">3.00x</option>
+                  <option value="3">3.00x</option>
                 </select>
               </div>
             </div>

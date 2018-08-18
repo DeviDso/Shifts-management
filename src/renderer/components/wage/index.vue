@@ -8,10 +8,20 @@
           </tr>
           <tr v-for="employee in employees">
             <td>{{ employee.name + ' ' + employee.surname }}</td>
-            <td v-for="month in months">{{ calculateWage(month+1, employee.schedule.data, employee).toFixed(2) }} &euro;</td>
+            <td v-for="month in months">0 &euro;</td>
+            <!-- <td v-for="month in months">{{ calculateWage(month+1, employee.schedule.data, employee).toFixed(2) }} &euro;</td> -->
           </tr>
       </thead>
     </table>
+    <button class="uk-hidden" id="load" uk-toggle="target: #loading-modal"></button>
+    <div id="loading-modal" uk-modal class="uk-modal uk-open" style="display: none">
+      <div class="uk-modal-dialog">
+        <div class="uk-modal-body uk-margin-top uk-position-center">
+          <div uk-spinner="ratio: 3" style="color: #000; margin-left: 40%; margin-top: 375px"></div>
+        </div>
+        <button id="closeLoadingModal" class="uk-button uk-button-default uk-modal-close uk-hidden" type="button">Cancel</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,6 +41,7 @@
       }
     },
     mounted(){
+      document.getElementById('load').click()
       this.$http.all([
         this.$http.get('employee'),
         this.$http.get('settings'),
@@ -62,6 +73,10 @@
         })
       },
       calculateWage(month, data, employee){
+        if(!employee.position){
+          document.getElementById('closeLoadingModal').click()
+          return 0
+        }
         var totalWorkingMinutes = 0
         var totalHolidayMinutes = 0
         var totalNightMinutes = 0
@@ -160,6 +175,7 @@
             // }
           }
         })
+        document.getElementById('closeLoadingModal').click()
         return ((nightWage/60) * totalNightMinutes) + ((wage/60) * totalNightMinutes)
         // return (parseInt(totalWorkingMinutes) -  parseInt(totalNightMinutes)) * wage + (parseInt(totalNightMinutes) * nightWage)
       },

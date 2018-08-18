@@ -23,8 +23,8 @@
             <td>{{ index+1 }}</td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.surname }}</td>
-            <td>{{ employee.position.name }}</td>
-            <td>{{ (employee.schedule.name == employee.name + ' ' + employee.surname) ? 'Asmeninis' :  employee.schedule.name }}</td>
+            <td>{{ (employee.position) ? employee.position.name : 'Nepriskirtos' }}</td>
+            <td>{{ (employee.schedule) ? (employee.schedule.name == employee.name + ' ' + employee.surname) ? 'Asmeninis' :  employee.schedule.name : '-'}}</td>
         </tr>
       </tbody>
     </table>
@@ -124,6 +124,7 @@
                   <button class="uk-button uk-button-primary uk-button-medium" type="submit">Atnaujinti</button>
                 </div>
                 <div class="uk-align-right">
+                  <button class="uk-button uk-button-danger uk-button-medium" type="button" v-on:click="deleteEmployee(editEmployee.id)">Ištrinti</button>
                   <button id="editEmployee" class="uk-button uk-button-secondary uk-button-medium uk-modal-close" type="button">Uždaryti</button>
                 </div>
               </form>
@@ -202,13 +203,24 @@
       },
       updateEmployee(){
         this.$http.patch('employee/' + this.editEmployee.id, this.editEmployee).then(res => {
-          this.notify('succes', 'Darbuotojo informacija atnaujinta!')
+          this.notify('success', 'Darbuotojo informacija atnaujinta!')
           document.getElementById('editEmployee').click()
           this.getList()
         }).catch(err => {
           this.notify('warning', 'Klaida atnaujinant darbuotoją!')
           console.log(err)
         })
+      },
+      deleteEmployee(id){
+        if(confirm("Ar tikrai norite ištrinti darbuotoją?")){
+          this.$http.delete('employee/' + id).then(res => {
+            this.notify('success', 'Darbuotojas sėkmingai ištrintas')
+            this.getList()
+          }).catch(err => {
+            console.log(err)
+            this.notify('warning', 'Nepavyko ištrinti darbuotojo!')
+          })
+        }
       },
       openSchedule(id){
         this.$router.push({name: 'schedule-view', params:{id:id}})
