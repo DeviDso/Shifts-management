@@ -14,7 +14,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="employee, index in employees">
+              <tr v-for="employee, index in employees" v-if="employee.schedule">
                 <td><input class="uk-checkbox" type="checkbox" v-model="employee.checked"></td>
                 <td class="uk-text-nowrap">{{ employee.name }}</td>
                 <td class="uk-text-nowrap">{{ employee.surname }}</td>

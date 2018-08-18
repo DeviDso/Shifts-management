@@ -68,6 +68,12 @@
                     </select>
                   </div>
                 </div>
+                <div class="uk-margin" v-if="editEmployee.schedule_id == 'private'">
+                  <label class="uk-form-label">Pavadinimas</label>
+                  <div class="uk-form-controls">
+                    <input type="text" class="uk-input" v-model="editEmployee.private_schedule_name">
+                  </div>
+                </div>
                 <hr>
                 <div class="uk-align-left">
                   <button class="uk-button uk-button-primary uk-button-medium" type="submit">Sukurti</button>
@@ -114,9 +120,15 @@
                         <option v-for="schedule in schedules" :value="schedule.id" v-if="!schedule.private">{{ schedule.name }}</option>
                       </optgroup>
                       <optgroup label="Asmeniniai tvarkaraščiai">
-                        <option v-for="schedule in schedules" :value="schedule.id" v-if="schedule.private">{{ schedule.name }}</option>
+                        <option v-for="schedule, index in scheduleFilter(schedules)" :value="schedule.id" v-if="schedule.private">{{ schedule.name }}</option>
                       </optgroup>
                     </select>
+                  </div>
+                </div>
+                <div class="uk-margin" v-if="editEmployee.schedule_id == 'private'">
+                  <label class="uk-form-label">Pavadinimas</label>
+                  <div class="uk-form-controls">
+                    <input type="text" class="uk-input" v-model="editEmployee.private_schedule_name">
                   </div>
                 </div>
                 <hr>
@@ -172,6 +184,7 @@
           this.employees = employees.data
           this.positions = positions.data
           this.schedules = schedules.data
+          this.employee.position_id = positions.data[0].id
         })).catch(err => {
           this.notify('danger', 'Klaida įkeliant duomenis')
         })
@@ -196,12 +209,16 @@
       getEmployee(id){
         this.$http.get('employee/' + id).then(res => {
           this.editEmployee = res.data
+          if(res.data.schedule_id == null){
+            this.editEmployee.schedule_id = 'private'
+          }
         }).catch(err => {
           this.notify('warning', 'Klaida įkeliant darbuotoją!')
           console.log(err)
         })
       },
       updateEmployee(){
+        console.log(this.editEmployee)
         this.$http.patch('employee/' + this.editEmployee.id, this.editEmployee).then(res => {
           this.notify('success', 'Darbuotojo informacija atnaujinta!')
           document.getElementById('editEmployee').click()
@@ -237,6 +254,18 @@
         })
 
         return temp
+      },
+      scheduleFilter(items){
+        var employee = this.editEmployee.name + ' ' + this.editEmployee.surname
+
+        var temp = []
+
+        items.forEach(item => {
+          if(item.private){
+            (item.name.includes(employee)) ? temp.push(item) : false;
+          }
+        })
+        return temp
       }
     },
     watch:{
@@ -250,7 +279,7 @@
         })
 
         return temp
-      }
+      },
     }
   }
 </script>

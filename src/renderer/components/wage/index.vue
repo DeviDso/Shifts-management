@@ -6,7 +6,7 @@
               <th>Darbuotojas</th>
               <th v-for="month in months.names">{{ month }}</th>
           </tr>
-          <tr v-for="employee in employees">
+          <tr v-for="employee in employees" v-if="employee.schedule">
             <td>{{ employee.name + ' ' + employee.surname }}</td>
             <td v-for="month in months">0 &euro;</td>
             <!-- <td v-for="month in months">{{ calculateWage(month+1, employee.schedule.data, employee).toFixed(2) }} &euro;</td> -->

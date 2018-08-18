@@ -4,25 +4,27 @@
     <form v-on:submit="addRecord()">
     <div uk-grid>
       <div class="uk-width-1-4">
-        <h5>Darbas</h5>
+        <h5>Darbas  <sup><label><input class="uk-checkbox" type="checkbox" v-model="manualTime"> R. Įvestis</label></sup> </h5>
         <div class="uk-width-1-1" style="margin-top: -10px">
           <label class="uk-form-label uk-text-meta" for="form-stacked-text">Pradžia</label>
-          <select class="uk-select uk-form-controls uk-form-small" v-model="startTime">
+          <input type="time" class="uk-input uk-form-small" v-model="startTime" v-if="manualTime">
+          <select class="uk-select uk-form-controls uk-form-small" v-model="startTime" v-if="!manualTime">
             <option value="Pasirinkite">Pasirinkite</option>
-            <option value="7:30">7:30</option>
-            <option value="8:00">8:00</option>
-            <option value="9:00">9:00</option>
+            <option value="07:30">07:30</option>
+            <option value="08:00">08:00</option>
+            <option value="9:00">09:00</option>
             <option value="17:00">17:00</option>
             <option value="18:00">18:00</option>
           </select>
         </div>
         <div class="uk-width-1-1">
           <label class="uk-form-label uk-text-meta" for="form-stacked-text">Pabaiga</label>
-          <select class="uk-select uk-form-controls uk-form-small" v-model="endTime">
+          <input type="time" class="uk-input uk-form-small" v-model="endTime" v-if="manualTime">
+          <select class="uk-select uk-form-controls uk-form-small" v-model="endTime" v-if="!manualTime">
             <option value="Pasirinkite">Pasirinkite</option>
-            <option value="7:30">7:30</option>
-            <option value="8:00">8:00</option>
-            <option value="9:00">9:00</option>
+            <option value="07:30">07:30</option>
+            <option value="08:00">08:00</option>
+            <option value="09:00">09:00</option>
             <option value="17:00">17:00</option>
             <option value="18:00">18:00</option>
             <option value="20:00">20:00</option>
@@ -72,12 +74,14 @@
     <div id="breaks-modal" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Pertraukos</h2>
+            <sup><label><input class="uk-checkbox" type="checkbox" v-model="manualBreak"> Rankinė įvestis</label></sup>
             <form @submit.prevent="createPosition">
               <div uk-grid v-for="item, index in breaks">
                 <div class="uk-width-2-5">
                   <label class="uk-form-label">Pradžia</label>
                   <div class="uk-form-controls">
-                    <select class="uk-select" v-model="breaks[index].start">
+                    <input type="time" class="uk-input uk-form-small" v-model="breaks[index].start" v-if="manualBreak">
+                    <select class="uk-select" v-model="breaks[index].start" v-if="!manualBreak">
                       <option value="11:30">11:30</option>
                       <option value="12:00">12:00</option>
                       <option value="16:30">16:30</option>
@@ -87,7 +91,8 @@
                 <div class="uk-width-2-5">
                   <label class="uk-form-label">Pabaiga</label>
                   <div class="uk-form-controls">
-                    <select class="uk-select" v-model="breaks[index].end">
+                    <input type="time" class="uk-input uk-form-small" v-model="breaks[index].end" v-if="manualBreak">
+                    <select class="uk-select" v-model="breaks[index].end" v-if="!manualBreak">
                       <option value="12:00">12:00</option>
                       <option value="13:00">13:00</option>
                       <option value="17:00">17:00</option>
@@ -172,6 +177,8 @@
         miltpleData: [],
         extDay: false,
         vacation: false,
+        manualTime: false,
+        manualBreak: false,
         config:{
           // height: '100px',
           firstDay: 1,
@@ -501,9 +508,9 @@
         this.updateSchedule()
         this.daysSelected = 0
       },
-      removeEvent(event){
-        this.$refs.calendar.$emit('remove-event', event)
-      },
+      // removeEvent(event){
+      //   this.$refs.calendar.$emit('remove-event', event)
+      // },
       breakCountUpdate(opt, index = null){
         if(opt && this.breaks.length < 3){
           var newBreak = {
