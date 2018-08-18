@@ -78,6 +78,7 @@
     data(){
       return {
         date: new Date(),
+        settings: [],
         nextDate: '',
         employees: [],
         year: 'Pasirinkite',
@@ -92,9 +93,13 @@
     },
     mounted(){
       this.nextDate = new Date(this.date.getFullYear() + 1, this.date.getMonth(), this.date.getDate())
-      this.$http.get('employee').then(res => {
-        this.employees = res.data
-      }).catch(err => {
+      this.$http.all([
+        this.$http.get('employee'),
+        this.$http.get('settings')
+      ]).then(this.$http.spread((employees, settings) => {
+        this.employees = employees.data
+        this.settings = settings.data
+      })).catch(err => {
         console.log(err)
         this.notify('warning', 'Klaida įkeliant darbuotojus!')
       })
@@ -118,6 +123,11 @@
       },
       generatePdf(){
         var anySelected = false
+
+        this.export.night_starts = this.settings.night_starts
+        this.export.night_ends = this.settings.night_ends
+
+        console.log(this.export)
 
         this.employees.forEach(item => {
           if(item.checked){
