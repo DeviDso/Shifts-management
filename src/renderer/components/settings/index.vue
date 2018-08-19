@@ -24,11 +24,11 @@
               <label class="uk-form-label">Nakties pabaiga</label>
               <div class="uk-form-controls">
                 <select class="uk-select uk-form-small" v-model="settings.night_ends">
-                  <option value="5:00">4:00</option>
-                  <option value="6:00">6:00</option>
-                  <option value="7:00">7:00</option>
-                  <option value="8:00">8:00</option>
-                  <option value="9:00">9:00</option>
+                  <option value="05:00">04:00</option>
+                  <option value="06:00">06:00</option>
+                  <option value="07:00">07:00</option>
+                  <option value="08:00">08:00</option>
+                  <option value="09:00">09:00</option>
                   <option value="10:00">22:00</option>
                 </select>
               </div>

@@ -24,7 +24,7 @@
             <td>{{ employee.name }}</td>
             <td>{{ employee.surname }}</td>
             <td>{{ (employee.position) ? employee.position.name : 'Nepriskirtos' }}</td>
-            <td>{{ (employee.schedule) ? (employee.schedule.name == employee.name + ' ' + employee.surname) ? 'Asmeninis' :  employee.schedule.name : '-'}}</td>
+            <td>{{ (employee.schedule) ? (employee.schedule.name.includes(employee.name + ' ' + employee.surname)) ? 'Asmeninis' :  employee.schedule.name : '-'}}</td>
         </tr>
       </tbody>
     </table>

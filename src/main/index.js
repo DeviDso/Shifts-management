@@ -21,9 +21,9 @@ function createWindow () {
     height: 700,
     useContentSize: true,
     width: 1110,
-    // webPreferences: {
-    //   devTools: false
-    // }
+    webPreferences: {
+      devTools: false
+    }
   })
 
   mainWindow.loadURL(winURL)

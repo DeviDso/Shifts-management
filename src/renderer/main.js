@@ -1,15 +1,9 @@
 import Vue from 'vue'
 import axios from 'axios'
-
 import App from './App'
 import router from './router'
 import store from './store'
-
 import dotenv from 'dotenv'
-dotenv.config({path: './.env'})
-
-// import FullCalendar from 'vue-full-calendar'
-// import moment from 'moment'
 import UIkit from 'uikit'
 import FullCalendar from 'vue-full-calendar'
 

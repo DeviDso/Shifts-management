@@ -8,8 +8,8 @@
           </tr>
           <tr v-for="employee in employees" v-if="employee.schedule">
             <td>{{ employee.name + ' ' + employee.surname }}</td>
-            <td v-for="month in months">0 &euro;</td>
-            <!-- <td v-for="month in months">{{ calculateWage(month+1, employee.schedule.data, employee).toFixed(2) }} &euro;</td> -->
+            <!-- <td v-for="month in months">0 &euro;</td> -->
+            <td v-for="month in months">{{ calculateWage(month+1, employee.schedule.data, employee).toFixed(2) }} &euro;</td>
           </tr>
       </thead>
     </table>
@@ -77,6 +77,7 @@
           document.getElementById('closeLoadingModal').click()
           return 0
         }
+        
         var totalWorkingMinutes = 0
         var totalHolidayMinutes = 0
         var totalNightMinutes = 0
@@ -86,18 +87,6 @@
         const wage = employee.position.wage
         const night1 = this.settings.night_starts
         const night2 = this.settings.night_ends
-
-        //Adding holidays to employee eventSelected
-        // this.holidays.forEach(item => {
-        //   var newHoliday = {
-        //     title: item.title,
-        //     start: item.date,
-        //     allDay: true,
-        //     color: '#e74c3c',
-        //     type: 'holiday'
-        //   }
-        //   data.push(newHoliday)
-        // })
 
         data.forEach(item => {
           var st = moment(item.start)
@@ -146,38 +135,36 @@
               }
             }
 
-            //Counting Holiday Working hours
-            // if(item.type == 'holiday'){
-            //   console.log('lol')
-            //   data.forEach(singleEvent => {
-            //     if(singleEvent.type != 'holiday'){
-            //       if(moment(item.start).isBetween(singleEvent.start.substring(0,10), singleEvent.end.substring(0,10), null, '[]')){
-            //         var hStart = moment(singleEvent.start)
-            //         var hEnd = moment(singleEvent.end)
-            //         var dayEnd = moment(singleEvent.start.substring(0,10) + ' 24:00')
-            //         var currentItem = moment(item.start)
-            //
-            //         if(hStart.get('date') == hEnd.get('date')){
-            //           var difference = hEnd.diff(hStart, 'm')
-            //         } else {
-            //           //Checks if it is a holiday for extended days (1st day)
-            //           if(hStart.get('date') == currentItem.get('date')){
-            //             var difference = dayEnd.diff(hStart, 'm')
-            //             // (2nd day)
-            //           } else{
-            //             var difference = hEnd.diff(dayEnd, 'm')
-            //           }
-            //         }
-            //         totalHolidayMinutes = totalHolidayMinutes + parseInt(difference)
-            //       }
-            //     }
-            //   })
-            // }
+            this.holidays.forEach(holidayItem => {
+              if(moment(item.start.substring(0,10)).isBetween(holidayItem.date, holidayItem.date, null, [])){
+                  var hStart = moment(holidayItem.date + ' 00:00')
+                  var hEnd = moment(holidayItem.date + ' 24:00')
+
+                  var itemStart = moment(item.start)
+                  var itemEnd = moment(item.end)
+
+                  if(itemStart.get('date') == itemEnd.get('date')){
+                    var difference = itemEnd.diff(itemStart, 'm')
+                  } else{
+                    //If it is first day of overnight
+                    if(hStart.get('date') == itemStart.get('date')){
+                      var difference = hEnd.diff(itemStart, 'm')
+                      //If it is second day of overnight
+                    } else{
+                      var difference = itemEnd.diff(hStart, 'm')
+                    }
+                  }
+                  totalHolidayMinutes = totalHolidayMinutes + parseInt(difference)
+              }
+            })
           }
         })
+
+        totalWorkingMinutes = totalWorkingMinutes - totalNightMinutes - totalHolidayMinutes
+
         document.getElementById('closeLoadingModal').click()
-        return ((nightWage/60) * totalNightMinutes) + ((wage/60) * totalNightMinutes)
-        // return (parseInt(totalWorkingMinutes) -  parseInt(totalNightMinutes)) * wage + (parseInt(totalNightMinutes) * nightWage)
+
+        return ((nightWage /  60) * totalNightMinutes) + ((wage / 60) * totalWorkingMinutes) + ((holidayWage / 60) * totalHolidayMinutes)
       },
       getMonths(){
         this.events.forEach(item => {
