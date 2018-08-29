@@ -62,16 +62,16 @@
                       <optgroup label="Bendri tvarkaraščiai">
                         <option v-for="schedule in schedules" :value="schedule.id" v-if="!schedule.private">{{ schedule.name }}</option>
                       </optgroup>
-                      <optgroup label="Asmeniniai tvarkaraščiai">
+                      <!-- <optgroup label="Asmeniniai tvarkaraščiai">
                         <option v-for="schedule in schedules" :value="schedule.id" v-if="schedule.private">{{ schedule.name }}</option>
-                      </optgroup>
+                      </optgroup> -->
                     </select>
                   </div>
                 </div>
-                <div class="uk-margin" v-if="editEmployee.schedule_id == 'private'">
+                <div class="uk-margin" v-if="employee.schedule_id == 'private'">
                   <label class="uk-form-label">Pavadinimas</label>
                   <div class="uk-form-controls">
-                    <input type="text" class="uk-input" v-model="editEmployee.private_schedule_name">
+                    <input type="text" class="uk-input" v-model="employee.private_schedule_name">
                   </div>
                 </div>
                 <hr>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="uk-align-right">
                   <button class="uk-button uk-button-danger uk-button-medium" type="button" v-on:click="deleteEmployee(editEmployee.id)">Ištrinti</button>
-                  <button id="editEmployee" class="uk-button uk-button-secondary uk-button-medium uk-modal-close" type="button">Uždaryti</button>
+                  <button v-bind:id="editEmployee.id" class="uk-button uk-button-secondary uk-button-medium uk-modal-close" type="button">Uždaryti</button>
                 </div>
               </form>
             </div>
@@ -195,6 +195,7 @@
           this.employee.surname = ''
           this.employee.schedule_id = 'private'
           this.employee.position = 1
+          this.employee.private_schedule_name = ''
 
           this.notify('success', 'Darbuotojas pridėtas')
           this.getList()
@@ -221,7 +222,7 @@
         console.log(this.editEmployee)
         this.$http.patch('employee/' + this.editEmployee.id, this.editEmployee).then(res => {
           this.notify('success', 'Darbuotojo informacija atnaujinta!')
-          document.getElementById('editEmployee').click()
+          document.getElementById(this.editEmployee.id).click()
           this.getList()
         }).catch(err => {
           this.notify('warning', 'Klaida atnaujinant darbuotoją!')
@@ -231,6 +232,7 @@
       deleteEmployee(id){
         if(confirm("Ar tikrai norite ištrinti darbuotoją?")){
           this.$http.delete('employee/' + id).then(res => {
+            document.getElementById(this.editEmployee.id).click()
             this.notify('success', 'Darbuotojas sėkmingai ištrintas')
             this.getList()
           }).catch(err => {

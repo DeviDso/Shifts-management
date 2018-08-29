@@ -69,11 +69,11 @@
                 </div>
                 <hr>
                 <div class="uk-align-left">
-                  <button class="uk-button uk-button-primary uk-button-medium" type="submit">Sukurti</button>
+                  <button class="uk-button uk-button-primary uk-button-medium" type="submit">Atnaujinti</button>
                 </div>
                 <div class="uk-align-right">
                   <button class="uk-button uk-button-danger uk-button-medium" type="button" v-on:click="deletePosition(editPosition.id)">Ištrinti</button>
-                  <button id="newPosition" class="uk-button uk-button-secondary uk-button-medium uk-modal-close" type="button">Uždaryti</button>
+                  <button v-bind:id="editPosition.id" class="uk-button uk-button-secondary uk-button-medium uk-modal-close" type="button">Uždaryti</button>
                 </div>
               </form>
             </div>
@@ -137,7 +137,7 @@
       updatePosition(){
         this.$http.patch('position/' + this.editPosition.id, this.editPosition).then(res => {
           this.notify('success', 'Atnaujinta!')
-          document.getElementById('edit-position').click()
+          document.getElementById(this.editPosition.id).click()
           this.getList()
         }).catch(err => {
           this.notify('warning', 'Klaida atnaujintant pareigas!')
@@ -148,7 +148,7 @@
         if(confirm("Ar tikrai norite ištrinti pareigas?")){
           this.$http.delete('position/' + id).then(res => {
             this.notify('success', 'Pareigos sėkmingai ištrintos')
-            document.getElementById('edit-position').click()
+            document.getElementById(this.editPosition.id).click()
             this.getList()
           }).catch(err => {
             console.log(err)

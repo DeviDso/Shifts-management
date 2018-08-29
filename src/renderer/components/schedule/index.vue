@@ -5,28 +5,10 @@
     </div>
     <h1 class="uk-heading-divider">Tvarkaraščiai</h1>
     <ul class="uk-subnav uk-subnav-pill" uk-switcher>
-        <li><a href="#">Bendri</a></li>
         <li><a href="#">Asmeniniai</a></li>
+        <li><a href="#">Bendri</a></li>
     </ul>
     <ul class="uk-switcher uk-margin">
-        <li>
-          <table class="uk-table uk-table-hover uk-table-divider">
-            <thead>
-              <tr>
-                  <th>Pavadinimas</th>
-                  <th>Dirbamų valandų skaičius</th>
-                  <th>Priskirta žmonių</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="schedule, index in schedules" v-on:click="openSchedule(schedule.id)" v-if="!schedule.private">
-                  <td>{{ schedule.name }}</td>
-                  <td>{{ schedule.max_hours + 'h ' + schedule.max_minutes + 'm'}}</td>
-                  <td>{{ schedule.employee.length }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </li>
         <li>
           <table class="uk-table uk-table-hover uk-table-divider">
             <thead>
@@ -41,6 +23,24 @@
                   <td>{{ schedule.name }}</td>
                   <td>{{ schedule.max_hours + 'h ' + schedule.max_minutes + 'm'}}</td>
                   <!-- <td>-</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li>
+          <table class="uk-table uk-table-hover uk-table-divider">
+            <thead>
+              <tr>
+                  <th>Pavadinimas</th>
+                  <th>Dirbamų valandų skaičius</th>
+                  <th>Priskirta žmonių</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="schedule, index in schedules" v-on:click="openSchedule(schedule.id)" v-if="!schedule.private">
+                  <td>{{ schedule.name }}</td>
+                  <td>{{ schedule.max_hours + 'h ' + schedule.max_minutes + 'm'}}</td>
+                  <td>{{ schedule.employee.length }}</td>
               </tr>
             </tbody>
           </table>

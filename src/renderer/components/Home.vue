@@ -1,10 +1,23 @@
 <template>
   <div>
-    <h1 class="uk-heading-divider">Senolių namai - Tvarkaraštis <sup>v 0.1.5</sup> </h1>
+    <h1 class="uk-heading-divider">Senolių namai - Tvarkaraštis <sup>v 1.0.2</sup> </h1>
 
     <div uk-grid>
-      <div class="uk-width-1-2">
+      <div class="uk-width-2-3">
         <h5>Atnaujinimai</h5>
+        <dl class="uk-description-list">
+          <dt>Rugpjūčio 27</dt>
+          <dd>
+            <ol>
+              <li>Atnaujinti pertraukų pasirinkimo laikai</li>
+              <li>Ištrynus darbutoją užsidaro informacinis langas</li>
+              <li>Pridedant naują darbuotoją neberodo asmeninių tvarkaraščių sąrašo</li>
+              <li>Asmeniniai tvarkaraščiai atvaizduojami pirmiau bendrų</li>
+              <li>Pareigų, datos, šventinių bei viso darbo minučių atvaizdavimas eksportuojant tvarkaraštį</li>
+            </ol>
+          </dd>
+        </dl>
+        <hr>
         <dl class="uk-description-list">
           <dt>Rugpjūčio 17</dt>
           <dd>Pridėtas atlyginimų skaičiavimas (galimi netikslumai).</dd>
@@ -20,7 +33,7 @@
           <dd>Naktinių, šventinių bei įprastų darbo valandų skaičiavimo pertvarkymas kalendoriuje.</dd>
         </dl>
       </div>
-      <div class="uk-width-1-2">
+      <div class="uk-width-1-3">
         <h5>Informacija</h5>
         <div class="uk-margin-small">
           <span uk-icon="users"></span> <span class="info_text">Darbuotojų: {{ employees.length }}</span>

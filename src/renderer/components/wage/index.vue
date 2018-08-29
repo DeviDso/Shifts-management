@@ -77,7 +77,7 @@
           document.getElementById('closeLoadingModal').click()
           return 0
         }
-        
+
         var totalWorkingMinutes = 0
         var totalHolidayMinutes = 0
         var totalNightMinutes = 0
@@ -98,6 +98,7 @@
           var daysInMonth = moment(en.get('year') + '-' + month).daysInMonth()
           var dateBegin = en.get('year') + '-' + month + '-01'
           var dateEnd = en.get('year') + '-' + month + '-' + daysInMonth
+
           //Checking if current date is in a month range
           var checker = en.isBetween(dateBegin, dateEnd, null, [])
 

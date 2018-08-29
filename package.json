@@ -1,6 +1,6 @@
 {
   "name": "Schedule",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "David <dsadeckas@gmail.com>",
   "description": "Build schedules for employees and keep track of staff work hours, vacation and more.",
   "license": null,
@@ -56,16 +56,16 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-    "target": [
-      {
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      }
-    ]
-  },
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
     "linux": {
       "icon": "build/icons"
     }

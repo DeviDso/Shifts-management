@@ -84,7 +84,13 @@
                     <select class="uk-select" v-model="breaks[index].start" v-if="!manualBreak">
                       <option value="11:30">11:30</option>
                       <option value="12:00">12:00</option>
-                      <option value="16:30">16:30</option>
+                      <option value="12:30">12:30</option>
+                      <option value="13:00">13:00</option>
+                      <option value="13:30">13:30</option>
+                      <option value="14:00">14:00</option>
+                      <option value="14:30">14:30</option>
+                      <option value="15:30">15:30</option>
+                      <option value="16:00">16:00</option>
                     </select>
                   </div>
                 </div>
@@ -94,7 +100,12 @@
                     <input type="time" class="uk-input uk-form-small" v-model="breaks[index].end" v-if="manualBreak">
                     <select class="uk-select" v-model="breaks[index].end" v-if="!manualBreak">
                       <option value="12:00">12:00</option>
+                      <option value="12:30">12:30</option>
                       <option value="13:00">13:00</option>
+                      <option value="13:30">13:30</option>
+                      <option value="15:00">15:00</option>
+                      <option value="16:00">16:00</option>
+                      <option value="16:30">16:30</option>
                       <option value="17:00">17:00</option>
                     </select>
                   </div>
@@ -148,7 +159,7 @@
                   <button class="uk-button uk-button-primary uk-button-small" type="submit">Išsaugoti</button>
                 </div>
                 <div class="uk-align-right">
-                  <button id="closeScheduleSettings" class="uk-button uk-button-secondary uk-button-small uk-modal-close" type="button">Uždaryti</button>
+                  <button v-bind:id="schedule.id" class="uk-button uk-button-secondary uk-button-small uk-modal-close" type="button">Uždaryti</button>
                 </div>
               </form>
             </div>
@@ -528,8 +539,8 @@
 
         if(confirmed){
           this.$http.delete('schedule/' + this.schedule.id).then(res => {
+            document.getElementById(this.schedule.id).click()
             this.notify('success', res.data)
-            document.getElementById('closeScheduleSettings').click()
             this.$router.push({name:'schedules'})
           }).catch(err => {
             this.notify('warning', 'Nepavyko ištrinti tvarkaraščio!')
